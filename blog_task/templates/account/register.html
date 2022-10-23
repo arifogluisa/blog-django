@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block content %}
+<div class="content-section d-grid justify-content-center mt-3 mb-xxl-5">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">İndi qoşul</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-secondary" type="submit">Qeydiyyatdan keç</button>
+        </div>
+    </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Hesabınız var? <a class="ml-2" href="{% url 'login' %}">Giriş edin</a>
+        </small>
+    </div>
+</div>
+{% endblock %}

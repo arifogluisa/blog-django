@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <header class="mb-4">
+                    <h1 class="fw-bolder mb-1">{{ object.title }}</h1>
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4"><img class="img-fluid rounded" src="{{ object.image.url }}" alt="" /></figure>
+                <br>
+                <!-- Post content-->
+                <section class="mb-5">
+                    {{ object.description|safe }}
+                </section>
+            </article>
+        </div>
+        <div class="col-lg-4">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header">Axtar</div>
+                <form method="GET" action="{% url 'search' %}">
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Axtarmaq istədiyiniz sözü yazın..." aria-label="Enter search term..." aria-describedby="button-search" name="search"/>
+                            <button class="btn btn-primary" id="button-search" type="submit">Axtar!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header">Kateqoriyalar</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                {% for category in categories %}
+                                <li><a href="{% if category.slug %}{% url 'blog-by-category' slug=category.slug %}{% endif %}">{{ category.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

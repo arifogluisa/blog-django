@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: "always"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ../nginx.conf:/etc/nginx/nginx.conf
+      - ../../blog_task/static:/app/static
+      - ../../blog_task/media:/app/media
+    depends_on:
+      - "app"
+
+  app:
+    container_name: app
+    build: ../..
+    restart: "always"
+    env_file: .env
+    environment:
+      - VIRTUAL_HOST
+      - VIRTUAL_PORT=8000
+      - HTTP_PORT=8000
+      - STATS_PORT=8001
+    volumes:
+      - ../../blog_task:/code
+    ports:
+      - "8015:8000"
+    links:
+      - postgres
+    depends_on:
+      - "postgres"
+
+  postgres:
+    container_name:  postgres-db
+    image:           postgres:13
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdb:/var/lib/postgresql/data
+    env_file: .env
+
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

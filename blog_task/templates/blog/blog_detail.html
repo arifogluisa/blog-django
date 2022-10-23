@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1">{{ blog.title }}</h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2 row-cols-2">
+                        <p>{{ blog.author.get_full_name }}</p>
+                        <p>Tarix: {{ blog.created_at }}</p>
+                        <p>{{ like_count }} bəyənmə</p>
+                    </div>
+
+                    <!-- Post categories-->
+                    {% for category in blog.category.all %}
+                    <a class="badge bg-secondary text-decoration-none link-light" href="{% if category.slug %}{% url 'blog-by-category' slug=category.slug %}{% endif %}">{{ category.title }}</a>
+                    {% endfor %}
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4"><img class="img-fluid rounded" src="{{ blog.image.url }}" alt="" /></figure>
+                <br>
+                <form action="{% url 'blog_like' pk=blog.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="blog-id" value="{{blog.id}}" class="btn btn-primary ml-3">
+                        {% if like_status %}
+                            Unlike
+                        {% else %}
+                            Like
+                        {% endif %}
+                    </button>
+                </form>
+                <br>
+                <!-- Post content-->
+                <section class="mb-5">
+                    {{ blog.body|safe }}
+                </section>
+            </article>
+            <!-- Comments section-->
+            <section class="mb-5">
+                <div class="text-muted">
+                    <h5>Şərhlər</h5>
+                </div>
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <!-- Comment form-->
+                        {% if user.is_authenticated %}
+                        <form method="POST" class="mb-4">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                {{ comment_form|crispy }}
+                            </fieldset>
+                            <div class="form-group">
+                                <button class="btn btn-outline-secondary" type="submit">Paylaş</button>
+                            </div>
+                        </form>
+                        {% endif %}
+                        <!-- Single comment-->
+                        {% for comment in comments %}
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                <div class="ms-3">
+                                    <div style="white-space: nowrap;">
+                                        <div class="fw-bold" style="display: inline-block;">{{ comment.commenter.get_full_name }}</div>
+                                        <div class="text-muted" style="display: inline-block;">{{ comment.created_at }}</div>
+                                    </div>
+                                    {{ comment.text }}
+                                </div>
+                            </div>
+                            <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-4">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header">Axtar</div>
+                <form method="GET" action="{% url 'search' %}">
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Axtarmaq istədiyiniz sözü yazın..." aria-label="Enter search term..." aria-describedby="button-search" name="search"/>
+                            <button class="btn btn-primary" id="button-search" type="submit">Axtar!</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header">Kateqoriyalar</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-unstyled mb-0">
+                                {% for category in categories %}
+                                <li><a href="{% if category.slug %}{% url 'blog-by-category' slug=category.slug %}{% endif %}">{{ category.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

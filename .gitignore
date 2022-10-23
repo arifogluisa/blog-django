@@ -1,0 +1,15 @@
+bin/dev/pgdb/
+redisdb/
+.idea/
+media/
+localhost/
+locale/
+venv
+.venv
+db.sqlite3
+*.pyc
+certificate/local
+*.swp
+.DS_Store
+.DS_Store?
+pgdb/
