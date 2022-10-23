@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*5u(nz=i(r#v_el3r%**b$4ht&$%q_poie-c*rss3g5pt1#b=a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # os.environ.get("DEBUG", False) != "False"
+DEBUG = os.environ.get("DEBUG", False) != "False"
 PROD = not DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ("206.81.26.41",) if PROD else []
 
 AUTH_USER_MODEL = 'account.Account'
 

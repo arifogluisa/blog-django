@@ -23,7 +23,7 @@ services:
     restart: "always"
     env_file: .env
     environment:
-      - VIRTUAL_HOST
+      - VIRTUAL_HOST=206.81.26.41
       - VIRTUAL_PORT=8000
       - HTTP_PORT=8000
       - STATS_PORT=8001
