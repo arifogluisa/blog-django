@@ -33,7 +33,7 @@ AUTH_USER_MODEL = 'account.Account'
 # Application definition
 
 INSTALLED_APPS = [
-    'grappelli',
+    # 'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

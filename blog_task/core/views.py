@@ -168,3 +168,11 @@ def post_like(request, pk):
     else:
         post.likes.add(IpModel.objects.get(ip=ip))
     return HttpResponseRedirect(reverse('blog-detail', args=[post.slug]))
+
+
+class ManifestView(generic.TemplateView):
+    template_name = "manifest/manifest.json"
+
+
+class PushwooshServiceWorkerView(generic.TemplateView):
+    template_name = "manifest/pushwoosh-service-worker.js"

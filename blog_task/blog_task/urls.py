@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')),  # grappelli URLS
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('auth/', include('account.urls')),
@@ -18,3 +17,8 @@ if not settings.PROD:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )
+
+
+admin.site.site_header = "MPM Admin"
+admin.site.site_title = "MPM Administration"
+admin.site.index_title = "MPM Administration"
